@@ -37,11 +37,13 @@ export default function Home() {
         button, input {
           -webkit-tap-highlight-color: transparent;
         }
+        input::placeholder {
+          color: #666;
+        }
       `}</style>
       <main
         style={{
           minHeight: "100vh",
-          background: "#000",
           color: "#fff",
           fontFamily: '"Cascadia Mono", monospace',
           padding: "20px",
@@ -49,6 +51,12 @@ export default function Home() {
           display: "flex",
           flexDirection: "column",
           gap: "20px",
+          position: "relative",
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://files.catbox.moe/60cmyv.jpg')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: "fixed",
+          backgroundRepeat: "no-repeat",
         }}
       >
         <div
@@ -58,7 +66,9 @@ export default function Home() {
             margin: "0 auto",
             padding: "16px",
             boxSizing: "border-box",
-            background: "#111",
+            background: "rgba(17, 17, 17, 0.4)",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
             border: "1px solid #333",
             borderRadius: "14px",
             display: "flex",
@@ -79,7 +89,7 @@ export default function Home() {
               minWidth: 0,
               padding: "12px 14px",
               boxSizing: "border-box",
-              background: "#000",
+              background: "transparent",
               color: "#fff",
               border: "1px solid #333",
               borderRadius: "8px",
@@ -95,7 +105,7 @@ export default function Home() {
               appearance: "none",
               WebkitAppearance: "none",
               padding: "12px 18px",
-              background: "#000",
+              background: "transparent",
               color: "#fff",
               border: "1px solid #444",
               outline: "none",
@@ -113,10 +123,10 @@ export default function Home() {
               transition: "background 0.15s ease, opacity 0.15s ease",
             }}
             onMouseEnter={(e) => {
-              if (!loading) e.currentTarget.style.background = "#1a1a1a";
+              if (!loading) e.currentTarget.style.background = "rgba(255,255,255,0.08)";
             }}
             onMouseLeave={(e) => {
-              if (!loading) e.currentTarget.style.background = "#000";
+              if (!loading) e.currentTarget.style.background = "transparent";
             }}
           >
             {loading ? "Checking..." : "Enter"}
