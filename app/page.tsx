@@ -3,28 +3,33 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [key, skey] = useState("");
-  const [result, sresult] = useState("");
-  const [loading, sloading] = useState(false);
+  const [key, setKey] = useState("");
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  async function fetchhdata() {
-    sloading(true);
-    sresult("");
+  async function verifyKey() {
+    setLoading(true);
+    setResult("");
 
     try {
       const response = await fetch("/api/verify", {
         method: "POST",
-        headers: { "Content-Type": "application/json", },
-        body: JSON.stringify({ key: key, }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          key: key,
+        }),
       });
 
       const data = await response.json();
 
-      sresult(data.result);
-    } catch {
-      sresult("req failed");
+      setResult(JSON.stringify(data, null, 2));
+    } catch (error) {
+      setResult("Request failed: " + String(error));
     }
-    sloading(false);
+
+    setLoading(false);
   }
 
   return (
@@ -34,26 +39,34 @@ export default function Home() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: "Cascadia Mono",
+        fontFamily: "Arial, sans-serif",
       }}
     >
       <div
         style={{
-          width: 350,
+          width: 500,
           padding: 30,
           border: "1px solid #ddd",
           borderRadius: 12,
         }}
       >
+        <h1>Test Key</h1>
+
         <input
           type="text"
-          placeholder="ENTER NOWWWWWWWWWWWWWWWWW"
+          placeholder="key"
           value={key}
-          onChange={(e) => skey(e.target.value)}
-          style={{ width: "100%", padding: 10, marginBottom: 10, boxSizing: "border-box", }}
+          onChange={(e) => setKey(e.target.value)}
+          style={{
+            width: "100%",
+            padding: 10,
+            marginBottom: 10,
+            boxSizing: "border-box",
+          }}
         />
+
         <button
-          onClick={fetchhdata}
+          onClick={verifyKey}
           disabled={loading}
           style={{
             width: "100%",
@@ -61,11 +74,19 @@ export default function Home() {
             cursor: "pointer",
           }}
         >
-          {loading ? "1 sec" : "Enter"}
+          {loading ? "8" : "Enter"}
         </button>
 
         {result && (
-          <p> {result} </p>
+          <pre
+            style={{
+              marginTop: 20,
+              whiteSpace: "pre-wrap",
+              wordBreak: "break-word",
+            }}
+          >
+            {result}
+          </pre>
         )}
       </div>
     </main>
