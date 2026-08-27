@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "dev": "n",
-    "build": "ne",
-    "start": "ne"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "next": "^15.0.0",
