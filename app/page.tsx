@@ -52,7 +52,7 @@ export default function Home() {
           flexDirection: "column",
           gap: "20px",
           position: "relative",
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('https://files.catbox.moe/60cmyv.jpg')`,
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://files.catbox.moe/60cmyv.jpg')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
