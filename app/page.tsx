@@ -81,9 +81,7 @@ export default function Home() {
             placeholder="enter here baka"
             value={key}
             onChange={(e) => skey(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") requestshit();
-            }}
+            onKeyDown={(e) => { if (e.key === "Enter") requestshit(); }}
             style={{
               flex: 1,
               minWidth: 0,
@@ -129,10 +127,9 @@ export default function Home() {
               if (!loading) e.currentTarget.style.background = "transparent";
             }}
           >
-            {loading ? "Checking..." : "Enter"}
+            {loading ? "..." : "touch me"}
           </button>
         </div>
-
         <div
           style={{
             flex: 1,
