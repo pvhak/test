@@ -95,9 +95,9 @@ export default function Home() {
               appearance: "none",
               WebkitAppearance: "none",
               padding: "12px 18px",
-              background: "#fff",
-              color: "#000",
-              border: "none",
+              background: "#000",
+              color: "#fff",
+              border: "1px solid #444",
               outline: "none",
               boxShadow: "none",
               borderRadius: "8px",
@@ -110,7 +110,13 @@ export default function Home() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              transition: "opacity 0.15s ease",
+              transition: "background 0.15s ease, opacity 0.15s ease",
+            }}
+            onMouseEnter={(e) => {
+              if (!loading) e.currentTarget.style.background = "#1a1a1a";
+            }}
+            onMouseLeave={(e) => {
+              if (!loading) e.currentTarget.style.background = "#000";
             }}
           >
             {loading ? "Checking..." : "Enter"}
