@@ -6,17 +6,45 @@ export async function POST(request: Request) {
     const key = body.key;
 
     if (typeof key !== "string") {
-      return NextResponse.json({
+      return NextResponse.json(
+        {
           success: false,
           result: "nothing",
+          error: "Key is missing or is not a string",
         },
         { status: 400 }
       );
     }
 
-    const notes = JSON.parse(process.env.NOTES || "{}");
-    const note = notes[key];
+    const rawNotes = process.env.NOTES;
+    if (!rawNotes) {
+      return NextResponse.json(
+        {
+          success: false,
+          result: "nothing",
+          error: "NOTES environment variable is not set",
+        },
+        { status: 500 }
+      );
+    }
 
+    let notes;
+    try {
+      notes = JSON.parse(rawNotes);
+    } catch (error) {
+      console.error("NOTES JSON PARSE ERROR:", error);
+
+      return NextResponse.json(
+        {
+          success: false,
+          result: "nothing",
+          error: "NOTES environment variable contains invalid JSON",
+        },
+        { status: 500 }
+      );
+    }
+
+    const note = notes[key];
     if (note !== undefined) {
       return NextResponse.json({
         success: true,
@@ -27,13 +55,18 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: false,
       result: "nothing",
+      error: `Key "${key}" was not found`,
     });
-  } catch {
-    return NextResponse.json({
+  } catch (error) {
+    console.error("VERIFY API ERROR:", error);
+
+    return NextResponse.json(
+      {
         success: false,
         result: "nothing",
+        error: String(error),
       },
-      { status: 400 }
+      { status: 500 }
     );
   }
 }
