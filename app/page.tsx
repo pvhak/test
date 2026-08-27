@@ -3,33 +3,28 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [key, setKey] = useState("");
-  const [result, setResult] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [key, skey] = useState("");
+  const [result, sresult] = useState("");
+  const [loading, sloading] = useState(false);
 
-  async function verifyKey() {
-    setLoading(true);
-    setResult("");
+  async function fetchhdata() {
+    sloading(true);
+    sresult("");
 
     try {
       const response = await fetch("/api/verify", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          key: key,
-        }),
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify({ key: key, }),
       });
 
       const data = await response.json();
 
-      setResult(data.result);
+      sresult(data.result);
     } catch {
-      setResult("req failed");
+      sresult("req failed");
     }
-
-    setLoading(false);
+    sloading(false);
   }
 
   return (
@@ -39,7 +34,7 @@ export default function Home() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontFamily: "Arial, sans-serif",
+        fontFamily: "Cascadia Mono",
       }}
     >
       <div
@@ -50,18 +45,15 @@ export default function Home() {
           borderRadius: 12,
         }}
       >
-        <h1>Test Key</h1>
-
         <input
           type="text"
-          placeholder="key"
+          placeholder="ENTER NOWWWWWWWWWWWWWWWWW"
           value={key}
-          onChange={(e) => setKey(e.target.value)}
+          onChange={(e) => skey(e.target.value)}
           style={{ width: "100%", padding: 10, marginBottom: 10, boxSizing: "border-box", }}
         />
-
         <button
-          onClick={verifyKey}
+          onClick={fetchhdata}
           disabled={loading}
           style={{
             width: "100%",
@@ -73,9 +65,7 @@ export default function Home() {
         </button>
 
         {result && (
-          <p>
-            Result: <strong>{result}</strong>
-          </p>
+          <p> <strong>{result}</strong> </p>
         )}
       </div>
     </main>
