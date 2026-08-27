@@ -1,26 +1,26 @@
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  console.log("=== VERIFY API CALLED ===");
-
   try {
     const body = await request.json();
+    const key = body.key;
 
-    console.log("Request body:", body);
-    console.log("NOTES exists:", !!process.env.NOTES);
-    console.log("NOTES length:", process.env.NOTES?.length ?? 0);
+    const rawNotes = process.env.NOTES;
 
     return NextResponse.json({
       success: true,
-      receivedKey: body.key,
-      notesExists: !!process.env.NOTES,
-      notesLength: process.env.NOTES?.length ?? 0,
-      test: "imabiggertest",
-      result: "VERCEL API IS WORKING",
+      receivedKey: key,
+
+      notesExists: !!rawNotes,
+      notesLength: rawNotes?.length ?? 0,
+
+      notesPreview: rawNotes
+        ? rawNotes.substring(0, 200)
+        : "NOTES IS NOT SET",
+
+      result: "TEST",
     });
   } catch (error) {
-    console.error("ERROR:", error);
-
     return NextResponse.json(
       {
         success: false,
