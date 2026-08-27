@@ -3,33 +3,27 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [key, setKey] = useState("");
-  const [result, setResult] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [key, skey] = useState("");
+  const [result, sresult] = useState("");
+  const [loading, sloading] = useState(false);
 
-  async function verifyKey() {
-    setLoading(true);
-    setResult("");
+  async function requestshit() {
+    sloading(true);
+    sresult("");
 
     try {
       const response = await fetch("/api/verify", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          key: key,
-        }),
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify({ key, }),
       });
 
       const data = await response.json();
-
-      setResult(JSON.stringify(data, null, 2));
-    } catch (error) {
-      setResult("Request failed: " + String(error));
+      sresult(data.result);
+    } catch {
+      sresult("req failed");
     }
-
-    setLoading(false);
+    sloading(false);
   }
 
   return (
@@ -44,7 +38,7 @@ export default function Home() {
     >
       <div
         style={{
-          width: 500,
+          width: 350,
           padding: 30,
           border: "1px solid #ddd",
           borderRadius: 12,
@@ -56,7 +50,10 @@ export default function Home() {
           type="text"
           placeholder="key"
           value={key}
-          onChange={(e) => setKey(e.target.value)}
+          onChange={(e) => skey(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") { requestshit(); }
+          }}
           style={{
             width: "100%",
             padding: 10,
@@ -66,27 +63,14 @@ export default function Home() {
         />
 
         <button
-          onClick={verifyKey}
-          disabled={loading}
-          style={{
-            width: "100%",
-            padding: 10,
-            cursor: "pointer",
-          }}
+          onClick={requestshit} disabled={loading}
+          style={{ width: "100%", padding: 10, cursor: loading ? "default" : "pointer", }}
         >
-          {loading ? "8" : "Enter"}
+          {loading ? "Checking..." : "Enter"}
         </button>
 
         {result && (
-          <pre
-            style={{
-              marginTop: 20,
-              whiteSpace: "pre-wrap",
-              wordBreak: "break-word",
-            }}
-          >
-            {result}
-          </pre>
+          <p> {result} </p>
         )}
       </div>
     </main>
