@@ -41,7 +41,7 @@ export default function Home() {
         gap: "20px",
       }}
     >
-      {}
+      {/* Floating top bar */}
       <div
         style={{
           width: "100%",
@@ -66,7 +66,9 @@ export default function Home() {
           value={key}
           onChange={(e) => skey(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") { requestshit(); }
+            if (e.key === "Enter") {
+              requestshit();
+            }
           }}
           style={{
             flex: 1,
@@ -89,32 +91,45 @@ export default function Home() {
           onClick={requestshit}
           disabled={loading}
           style={{
-            padding: "12px 18px",
+            appearance: "none",
+            WebkitAppearance: "none",
 
+            padding: "12px 18px",
             background: "#fff",
             color: "#000",
+
             border: "none",
+            outline: "none",
+            boxShadow: "none",
+
             borderRadius: "8px",
 
             fontFamily: '"Cascadia Mono", monospace',
             fontSize: "14px",
+            fontWeight: "500",
 
             cursor: loading ? "default" : "pointer",
             opacity: loading ? 0.6 : 1,
+
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+
+            transition: "opacity 0.15s ease",
           }}
         >
           {loading ? "Checking..." : "Enter"}
         </button>
       </div>
 
-      {}
+      {/* Result scroll frame */}
       <div
         style={{
           flex: 1,
           minHeight: 0,
 
-          maxWidth: "900px",
           width: "100%",
+          maxWidth: "900px",
           margin: "0 auto",
 
           overflowY: "auto",
@@ -125,11 +140,6 @@ export default function Home() {
 
           padding: "40px",
           boxSizing: "border-box",
-
-          border: "1px solid #1c1c1c",
-          borderRadius: "14px",
-
-          background: "#050505",
         }}
       >
         {result && (
@@ -139,6 +149,7 @@ export default function Home() {
               textAlign: "center",
               whiteSpace: "pre-wrap",
               wordBreak: "break-word",
+
               fontSize: "18px",
               lineHeight: 1.7,
             }}
