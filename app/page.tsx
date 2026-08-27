@@ -37,41 +37,16 @@ export default function Home() {
       }}
     >
       <div
-        style={{
-          width: 350,
-          padding: 30,
-          border: "1px solid #ddd",
-          borderRadius: 12,
-        }}
+        style={{ width: 350, padding: 30, border: "1px solid #ddd", borderRadius: 12, }}
       >
-        <h1>Test Key</h1>
-
         <input
-          type="text"
-          placeholder="key"
-          value={key}
-          onChange={(e) => skey(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") { requestshit(); }
-          }}
-          style={{
-            width: "100%",
-            padding: 10,
-            marginBottom: 10,
-            boxSizing: "border-box",
-          }}
+          type="text" placeholder="enter here baka" value={key} onChange={(e) => skey(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter") { requestshit(); } }}
+          style={{ width: "100%", padding: 10, marginBottom: 10, boxSizing: "border-box", }}
         />
 
-        <button
-          onClick={requestshit} disabled={loading}
-          style={{ width: "100%", padding: 10, cursor: loading ? "default" : "pointer", }}
-        >
-          {loading ? "Checking..." : "Enter"}
-        </button>
-
-        {result && (
-          <p> {result} </p>
-        )}
+        <button onClick={requestshit} disabled={loading} style={{ width: "100%", padding: 10, cursor: loading ? "default" : "pointer", }} > {loading ? "Checking..." : "Enter"} </button>
+        {result && ( <p> {result} </p> )}
       </div>
     </main>
   );
