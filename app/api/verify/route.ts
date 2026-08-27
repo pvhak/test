@@ -5,21 +5,35 @@ export async function POST(request: Request) {
     const body = await request.json();
     const key = body.key;
 
-    if (key === "test") {
+    if (typeof key !== "string") {
+      return NextResponse.json({
+          success: false,
+          result: "nothing",
+        },
+        { status: 400 }
+      );
+    }
+
+    const notes = JSON.parse(process.env.NOTES || "{}");
+    const note = notes[key];
+
+    if (note !== undefined) {
       return NextResponse.json({
         success: true,
-        result: "hi",
+        result: note,
       });
     }
 
     return NextResponse.json({
       success: false,
-      result: "no",
+      result: "nothing",
     });
   } catch {
     return NextResponse.json({
-      success: false,
-      result: "no",
-    });
+        success: false,
+        result: "nothing",
+      },
+      { status: 400 }
+    );
   }
 }
