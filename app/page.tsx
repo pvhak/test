@@ -65,7 +65,7 @@ export default function Home() {
         </button>
 
         {result && (
-          <p> <strong>{result}</strong> </p>
+          <p> {result} </p>
         )}
       </div>
     </main>
