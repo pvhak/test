@@ -1,69 +1,29 @@
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
+  console.log("=== VERIFY API CALLED ===");
+
   try {
     const body = await request.json();
-    const key = body.key;
 
-    if (typeof key !== "string") {
-      return NextResponse.json(
-        {
-          success: false,
-          result: "nothing",
-          error: "Key is missing or is not a string",
-        },
-        { status: 400 }
-      );
-    }
-
-    const rawNotes = process.env.NOTES;
-    if (!rawNotes) {
-      return NextResponse.json(
-        {
-          success: false,
-          result: "nothing",
-          error: "NOTES environment variable is not set",
-        },
-        { status: 500 }
-      );
-    }
-
-    let notes;
-    try {
-      notes = JSON.parse(rawNotes);
-    } catch (error) {
-      console.error("NOTES JSON PARSE ERROR:", error);
-
-      return NextResponse.json(
-        {
-          success: false,
-          result: "nothing",
-          error: "NOTES environment variable contains invalid JSON",
-        },
-        { status: 500 }
-      );
-    }
-
-    const note = notes[key];
-    if (note !== undefined) {
-      return NextResponse.json({
-        success: true,
-        result: note,
-      });
-    }
+    console.log("Request body:", body);
+    console.log("NOTES exists:", !!process.env.NOTES);
+    console.log("NOTES length:", process.env.NOTES?.length ?? 0);
 
     return NextResponse.json({
-      success: false,
-      result: "nothing",
-      error: `Key "${key}" was not found`,
+      success: true,
+      receivedKey: body.key,
+      notesExists: !!process.env.NOTES,
+      notesLength: process.env.NOTES?.length ?? 0,
+      test: "imabiggertest",
+      result: "VERCEL API IS WORKING",
     });
   } catch (error) {
-    console.error("VERIFY API ERROR:", error);
+    console.error("ERROR:", error);
 
     return NextResponse.json(
       {
         success: false,
-        result: "nothing",
         error: String(error),
       },
       { status: 500 }
