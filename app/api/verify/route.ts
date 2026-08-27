@@ -4,27 +4,32 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const key = body.key;
+    if (typeof key !== "string") {
+      return NextResponse.json({
+          success: false,
+          result: "nothing",
+        },
+        { status: 400 }
+      );
+    }
 
-    const rawNotes = process.env.NOTES;
-
+    const notes = JSON.parse(process.env.NOTES || "{}");
+    const note = notes[key];
+    if (note !== undefined) {
+      return NextResponse.json({
+        success: true,
+        result: note,
+      });
+    }
     return NextResponse.json({
-      success: true,
-      receivedKey: key,
-
-      notesExists: !!rawNotes,
-      notesLength: rawNotes?.length ?? 0,
-
-      notesPreview: rawNotes
-        ? rawNotes.substring(0, 200)
-        : "NOTES IS NOT SET",
-
-      result: "TEST",
+      success: false,
+      result: "nothing",
     });
   } catch (error) {
-    return NextResponse.json(
-      {
+    console.error("VERIFY ERROR:", error);
+    return NextResponse.json({
         success: false,
-        error: String(error),
+        result: "nothing",
       },
       { status: 500 }
     );
