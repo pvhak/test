@@ -69,7 +69,7 @@ export default function Home() {
             cursor: "pointer",
           }}
         >
-          {loading ? "Checking..." : "Enter"}
+          {loading ? "1 sec" : "Enter"}
         </button>
 
         {result && (
