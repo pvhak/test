@@ -40,13 +40,35 @@ export default function Home() {
         input::placeholder {
           color: #666;
         }
+        * {
+          scrollbar-width: thin;
+          scrollbar-color: #333 #000;
+        }
+        *::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+        *::-webkit-scrollbar-track {
+          background: #000;
+        }
+        *::-webkit-scrollbar-thumb {
+          background-color: #2a2a2a;
+          border-radius: 8px;
+          border: 2px solid #000;
+        }
+        *::-webkit-scrollbar-thumb:hover {
+          background-color: #444;
+        }
+        *::-webkit-scrollbar-corner {
+          background: #000;
+        }
       `}</style>
       <main
         style={{
           minHeight: "100vh",
           color: "#fff",
           fontFamily: '"Cascadia Mono", monospace',
-          padding: "20px",
+          padding: "0 20px 20px",
           boxSizing: "border-box",
           display: "flex",
           flexDirection: "column",
@@ -74,6 +96,9 @@ export default function Home() {
             display: "flex",
             gap: "10px",
             boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
+            position: "sticky",
+            top: "20px",
+            zIndex: 10,
           }}
         >
           <input
