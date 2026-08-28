@@ -14,9 +14,7 @@ async function genkey4thing(notename: string): Promise<string> {
   return key;
 }
 
-async function sendlogsNOW(
-  title: string,
-  fields: { name: string; value: string; inline?: boolean }[]) {
+async function sendlogsNOW(title: string, fields: { name: string; value: string; inline?: boolean }[]) {
   const webhook = process.env.webhook;
   if (!webhook) {
     console.warn("fuck u vercel");
@@ -28,7 +26,7 @@ async function sendlogsNOW(
       method: "POST",
       headers: { "Content-Type": "application/json", },
       body: JSON.stringify({
-        embeds: [ { title, color: 0x5c4a2e, fields, timestamp: new Date().toISOString(), }, ],
+        embeds: [{ title, description: `-# ${new Date().toLocaleString()}`, color: 0x5c4a2e, fields,},],
       }),
     });
   } catch (error) {
@@ -53,14 +51,13 @@ async function initkeys() {
 
       await sendlogsNOW("key generated", [{
           name: "parent",
-          value: `\`${notename}\``,
-          inline: true,
-        },
-        {
+          value: `\`\`\`${notename}\`\`\``,
+        },{
           name: "key",
-          value: `\`${key}\``,
+          value: `\`\`\`${key}\`\`\``,
         },
       ]);
+      
     }
   } catch (error) {
     console.error("key init err;", error);
@@ -107,14 +104,13 @@ export async function POST(request: Request) {
 
     await sendlogsNOW("key used", [{
         name: "parent",
-        value: `\`${notename}\``,
-        inline: true,
-      }, {
+        value: `\`\`\`${notename}\`\`\``,
+      },{
         name: "old key",
-        value: `\`${key}\``,
-      }, {
-        name: "mew key",
-        value: `\`${newkey}\``,
+        value: `\`\`\`${key}\`\`\``,
+      },{
+        name: "new key",
+        value: `\`\`\`${newkey}\`\`\``,
       },
     ]);
 
