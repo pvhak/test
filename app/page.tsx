@@ -36,7 +36,14 @@ export default function Home() {
           padding: 0;
           background: #000;
         }
-
+        ::selection {
+          background: #000;
+          color: #fff;
+        }
+        ::-moz-selection {
+          background: #000;
+          color: #fff;
+        }
         * {
           box-sizing: border-box;
         }
