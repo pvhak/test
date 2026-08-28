@@ -108,7 +108,7 @@ export default function Home() {
               rgba(0,0,0,0.97),
               rgba(0,0,0,0.85)
             ),
-            url('https://files.catbox.moe/60cmyv.jpg')
+            url('https://raw.githubusercontent.com/pvhak/pvhak/609ce9de248ce15b72f60616e914b5505b8c8ced/train.jpg')
           `,
           backgroundSize: "cover",
           backgroundPosition: "center",
