@@ -188,7 +188,7 @@ export default function Home() {
 
               borderRadius: "8px",
 
-              fontFamily: '"Cascadia Mono", monospace",
+              fontFamily: '"Cascadia Mono", monospace',
               fontSize: "14px",
               fontWeight: 500,
 
