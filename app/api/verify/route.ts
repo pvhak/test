@@ -14,6 +14,15 @@ function genkey4thing(notename: string): string {
   return key;
 }
 
+function genkey4thing(notename: string): string {
+  let key = genok();
+  while (tempkeys.has(key)) {
+    key = genok();
+  }
+  tempkeys.set(key, notename);
+  return key;
+}
+
 async function sendlogsNOW(message: string) {
   const webhook = process.env.webhook;
   if (!webhook) {
@@ -25,7 +34,9 @@ async function sendlogsNOW(message: string) {
     await fetch(webhook, {
       method: "POST",
       headers: { "Content-Type": "application/json", },
-      body: JSON.stringify({ content: message, }),
+      body: JSON.stringify({
+        embeds: [ { description: message, color: 0x5c4a2e, }, ],
+      }),
     });
   } catch (error) {
     console.error("WEBHOOK ERROR:", error);
