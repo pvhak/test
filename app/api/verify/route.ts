@@ -1,23 +1,23 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import { Redis } from "@upstash/redis";
 
-const tempkeys = new Map<string, string>();
+const redis = Redis.fromEnv();
 
 function genok(): string {
   return crypto.randomBytes(16).toString("hex");
 }
 
-function genkey4thing(notename: string): string {
-  let key = genok();
-  while (tempkeys.has(key)) { key = genok(); }
-  tempkeys.set(key, notename);
+async function genkey4thing(notename: string): Promise<string> {
+  const key = genok();
+  await redis.set(`tempkey:${key}`, notename);
   return key;
 }
 
 async function sendlogsNOW(message: string) {
   const webhook = process.env.webhook;
   if (!webhook) {
-    console.warn("? fat fuck i hate u");
+    console.warn("webhook isn't configured");
     return;
   }
 
@@ -25,8 +25,7 @@ async function sendlogsNOW(message: string) {
     await fetch(webhook, {
       method: "POST",
       headers: { "Content-Type": "application/json", },
-      body: JSON.stringify({
-        embeds: [ { description: message, color: 0x5c4a2e, }, ],
+      body: JSON.stringify({ embeds: [{ description: message, color: 0x5c4a2e, }, ],
       }),
     });
   } catch (error) {
@@ -34,36 +33,41 @@ async function sendlogsNOW(message: string) {
   }
 }
 
-function initkeys() {
-  if (tempkeys.size > 0) {
-    return;
-  }
-
+async function initkeys() {
   try {
     const notes = JSON.parse(process.env.NOTES || "{}");
     for (const notename of Object.keys(notes)) {
-      genkey4thing(notename);
-    }
+      const indexKey = `notekey:${notename}`;
+      const existingKey = await redis.get<string>(indexKey);
 
-    console.log(`genned ${tempkeys.size} temps`);
+      if (existingKey) {
+        continue;
+      }
 
-    for (const [key, notename] of tempkeys) {
-      sendlogsNOW(`genned..\nnote: \`${notename}\`\nkey: \`${key}\``);
+      const key = await genkey4thing(notename);
+      await redis.set(indexKey, key);
+
+      await sendlogsNOW(
+        `genned..\n` +
+        `note: \`${notename}\`\n` +
+        `key: \`${key}\``
+      );
     }
   } catch (error) {
     console.error("key init err;", error);
   }
 }
 
-initkeys();
-
 export async function POST(request: Request) {
   try {
+    await initkeys();
+
     const body = await request.json();
     const key = body.key;
 
     if (typeof key !== "string") {
-      return NextResponse.json({
+      return NextResponse.json(
+        {
           success: false,
           result: "nothing",
         },
@@ -72,7 +76,7 @@ export async function POST(request: Request) {
     }
 
     const notes = JSON.parse(process.env.NOTES || "{}");
-    const notename = tempkeys.get(key);
+    const notename = await redis.getdel<string>(`tempkey:${key}`);
 
     if (!notename) {
       return NextResponse.json({
@@ -83,27 +87,26 @@ export async function POST(request: Request) {
 
     const note = notes[notename];
     if (note === undefined) {
-      tempkeys.delete(key);
       return NextResponse.json({
         success: false,
         result: "nothing",
       });
     }
 
-    tempkeys.delete(key);
-    const newKey = genkey4thing(notename);
-    
+    const newkey = await genkey4thing(notename);
+    await redis.set(`notekey:${notename}`, newkey);
+
     await sendlogsNOW(
       `key used\n` +
       `note: \`${notename}\`\n` +
       `old key: \`${key}\`\n` +
-      `new key: \`${newKey}\``
+      `new key: \`${newkey}\``
     );
 
     return NextResponse.json({
       success: true,
       result: note,
-      key: newKey,
+      key: newkey,
     });
   } catch (error) {
     console.error("verif err;", error);
