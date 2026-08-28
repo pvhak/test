@@ -14,15 +14,6 @@ function genkey4thing(notename: string): string {
   return key;
 }
 
-function genkey4thing(notename: string): string {
-  let key = genok();
-  while (tempkeys.has(key)) {
-    key = genok();
-  }
-  tempkeys.set(key, notename);
-  return key;
-}
-
 async function sendlogsNOW(message: string) {
   const webhook = process.env.webhook;
   if (!webhook) {
