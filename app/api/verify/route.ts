@@ -26,8 +26,9 @@ async function sendlogsNOW(title: string, fields: { name: string; value: string;
     await fetch(webhook, {
       method: "POST",
       headers: { "Content-Type": "application/json", },
-      body: JSON.stringify({embeds: [{
-            title: `${title} - <t:${timestamp}:f>`,
+      body: JSON.stringify({
+        embeds: [{
+            title: `${title} - <t:${timestamp}:R>`,
             color: 0x5c4a2e, fields,
           },
         ],
