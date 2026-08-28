@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 
 export default function Home() {
@@ -9,96 +10,138 @@ export default function Home() {
   async function requestshit() {
     sloading(true);
     sresult("");
+
     try {
       const response = await fetch("/api/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ key }),
       });
+
       const data = await response.json();
       sresult(data.result);
     } catch {
       sresult("req failed");
     }
+
     sloading(false);
   }
 
   return (
     <>
       <style jsx global>{`
-        html, body {
+        html,
+        body {
           margin: 0;
           padding: 0;
           background: #000;
         }
+
         * {
           box-sizing: border-box;
         }
-        button, input {
+
+        button,
+        input {
           -webkit-tap-highlight-color: transparent;
         }
+
         input::placeholder {
           color: #666;
         }
+
+        html {
+          scrollbar-width: thin;
+          scrollbar-color: #333 #000;
+        }
+
+        body {
+          scrollbar-width: thin;
+          scrollbar-color: #333 #000;
+        }
+
         * {
           scrollbar-width: thin;
           scrollbar-color: #333 #000;
         }
+
         *::-webkit-scrollbar {
           width: 8px;
           height: 8px;
         }
+
         *::-webkit-scrollbar-track {
           background: #000;
         }
+
         *::-webkit-scrollbar-thumb {
-          background-color: #2a2a2a;
-          border-radius: 8px;
+          background: #2a2a2a;
+          border-radius: 999px;
           border: 2px solid #000;
         }
+
         *::-webkit-scrollbar-thumb:hover {
-          background-color: #444;
+          background: #444;
         }
+
         *::-webkit-scrollbar-corner {
           background: #000;
         }
+        html,
+        body {
+          overflow-x: hidden;
+        }
       `}</style>
+
       <main
         style={{
           minHeight: "100vh",
           color: "#fff",
           fontFamily: '"Cascadia Mono", monospace',
-          padding: "0 20px 20px",
-          boxSizing: "border-box",
+          padding: "110px 20px 40px",
           display: "flex",
           flexDirection: "column",
           gap: "20px",
           position: "relative",
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.97), rgba(0,0,0,0.85)), url('https://files.catbox.moe/60cmyv.jpg')`,
+          backgroundImage: `
+            linear-gradient(
+              rgba(0,0,0,0.97),
+              rgba(0,0,0,0.85)
+            ),
+            url('https://files.catbox.moe/60cmyv.jpg')
+          `,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundAttachment: "fixed",
           backgroundRepeat: "no-repeat",
         }}
       >
+        {}
         <div
           style={{
-            width: "100%",
+            position: "fixed",
+            top: "20px",
+            left: "50%",
+            transform: "translateX(-50%)",
+
+            width: "calc(100% - 40px)",
             maxWidth: "700px",
-            margin: "0 auto",
+
             padding: "16px",
-            boxSizing: "border-box",
-            background: "rgba(17, 17, 17, 0.4)",
+
+            background: "rgba(17, 17, 17, 0.65)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
+
             border: "1px solid #333",
             borderRadius: "14px",
+
             display: "flex",
             gap: "10px",
+
             boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
-            position: "sticky",
-            top: "20px",
-            zIndex: 10,
+
+            zIndex: 9999,
           }}
         >
           <input
@@ -106,77 +149,108 @@ export default function Home() {
             placeholder="enter here baka"
             value={key}
             onChange={(e) => skey(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") requestshit(); }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") requestshit();
+            }}
             style={{
               flex: 1,
               minWidth: 0,
+
               padding: "12px 14px",
-              boxSizing: "border-box",
+
               background: "transparent",
               color: "#fff",
+
               border: "1px solid #333",
               borderRadius: "8px",
               outline: "none",
+
               fontFamily: '"Cascadia Mono", monospace',
               fontSize: "14px",
             }}
           />
+
           <button
             onClick={requestshit}
             disabled={loading}
             style={{
               appearance: "none",
               WebkitAppearance: "none",
+
               padding: "12px 18px",
+
               background: "transparent",
               color: "#fff",
+
               border: "1px solid #444",
               outline: "none",
               boxShadow: "none",
+
               borderRadius: "8px",
-              fontFamily: '"Cascadia Mono", monospace',
+
+              fontFamily: '"Cascadia Mono", monospace",
               fontSize: "14px",
               fontWeight: 500,
+
               cursor: loading ? "default" : "pointer",
               opacity: loading ? 0.6 : 1,
+
               whiteSpace: "nowrap",
+
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              transition: "background 0.15s ease, opacity 0.15s ease",
+
+              transition:
+                "background 0.15s ease, opacity 0.15s ease",
             }}
             onMouseEnter={(e) => {
-              if (!loading) e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+              if (!loading) {
+                e.currentTarget.style.background =
+                  "rgba(255,255,255,0.08)";
+              }
             }}
             onMouseLeave={(e) => {
-              if (!loading) e.currentTarget.style.background = "transparent";
+              if (!loading) {
+                e.currentTarget.style.background = "transparent";
+              }
             }}
           >
             {loading ? "..." : "touch me"}
           </button>
         </div>
+
+        {}
         <div
           style={{
-            flex: 1,
-            minHeight: 0,
             width: "100%",
             maxWidth: "900px",
             margin: "0 auto",
+            minHeight: "calc(100vh - 150px)",
             overflowY: "auto",
+            overflowX: "hidden",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             padding: "40px",
-            boxSizing: "border-box",
+            overscrollBehavior: "contain",
+            scrollbarWidth: "thin",
+            scrollbarColor: "#333 #000",
           }}
         >
           {result && (
             <p
               style={{
                 margin: 0,
+
+                width: "100%",
+
                 textAlign: "center",
+
                 whiteSpace: "pre-wrap",
+                overflowWrap: "anywhere",
                 wordBreak: "break-word",
+
                 fontSize: "18px",
                 lineHeight: 1.7,
               }}
