@@ -38,11 +38,11 @@ export default function Home() {
         }
         ::selection {
           background: #000;
-          color: #fff;
+          color: #cfcfcf;
         }
         ::-moz-selection {
           background: #000;
-          color: #fff;
+          color: #cfcfcf;
         }
         * {
           box-sizing: border-box;
