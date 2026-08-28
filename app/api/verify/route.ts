@@ -22,11 +22,15 @@ async function sendlogsNOW(title: string, fields: { name: string; value: string;
   }
 
   try {
+    const timestamp = Math.floor(Date.now() / 1000);
     await fetch(webhook, {
       method: "POST",
       headers: { "Content-Type": "application/json", },
-      body: JSON.stringify({
-        embeds: [{ title, description: `-# ${new Date().toLocaleString()}`, color: 0x5c4a2e, fields,},],
+      body: JSON.stringify({embeds: [{
+            title: `${title} - <t:${timestamp}:f>`,
+            color: 0x5c4a2e, fields,
+          },
+        ],
       }),
     });
   } catch (error) {
@@ -39,15 +43,15 @@ async function initkeys() {
     const notes = JSON.parse(process.env.NOTES || "{}");
 
     for (const notename of Object.keys(notes)) {
-      const indexKey = `notekey:${notename}`;
-      const existingKey = await redis.get<string>(indexKey);
+      const indkey = `notekey:${notename}`;
+      const extkey = await redis.get<string>(indkey);
 
-      if (existingKey) {
+      if (extkey) {
         continue;
       }
 
       const key = await genkey4thing(notename);
-      await redis.set(indexKey, key);
+      await redis.set(indkey, key);
 
       await sendlogsNOW("key generated", [{
           name: "parent",
@@ -67,7 +71,6 @@ async function initkeys() {
 export async function POST(request: Request) {
   try {
     await initkeys();
-
     const body = await request.json();
     const key = body.key;
 
