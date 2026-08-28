@@ -227,15 +227,10 @@ export default function Home() {
             maxWidth: "900px",
             margin: "0 auto",
             minHeight: "calc(100vh - 150px)",
-            overflowY: "auto",
-            overflowX: "hidden",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             padding: "40px",
-            overscrollBehavior: "contain",
-            scrollbarWidth: "thin",
-            scrollbarColor: "#333 #000",
           }}
         >
           {result && (
