@@ -17,7 +17,7 @@ async function genkey4thing(notename: string): Promise<string> {
 async function sendlogsNOW(message: string) {
   const webhook = process.env.webhook;
   if (!webhook) {
-    console.warn("webhook isn't configured");
+    console.warn("fuck u vercel");
     return;
   }
 
@@ -29,7 +29,7 @@ async function sendlogsNOW(message: string) {
       }),
     });
   } catch (error) {
-    console.error("WEBHOOK ERROR:", error);
+    console.error("WH er;", error);
   }
 }
 
