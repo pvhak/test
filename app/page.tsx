@@ -129,7 +129,7 @@ export default function Home() {
 
             padding: "16px",
 
-            background: "rgba(17, 17, 17, 0.65)",
+            background: "rgba(17, 17, 17, 0.25)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
 
